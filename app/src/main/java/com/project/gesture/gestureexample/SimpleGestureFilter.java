@@ -1,6 +1,8 @@
 package com.project.gesture.gestureexample;
 
 import android.app.Activity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -18,10 +20,12 @@ public class SimpleGestureFilter extends SimpleOnGestureListener {
     public final static int MODE_DYNAMIC = 2;
 
     private final static int ACTION_FAKE = -13; // just an unlikely number
+    private final int height;
+    private final int width;
 
     // Swipe distances
     private int swipe_Min_Distance = 100;
-    private int swipe_Max_Distance = 350;
+    private int swipe_Max_Distance = 2000;
     private int swipe_Min_Velocity = 100;
 
     private int mode = MODE_DYNAMIC;
@@ -38,6 +42,14 @@ public class SimpleGestureFilter extends SimpleOnGestureListener {
         this.context = context;
         this.detector = new GestureDetector(context, this);
         this.listener = simpleGestureListener;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        swipe_Max_Distance = height;
+        Log.d("HEIGHT", "" + height);
     }
 
     public void onTouchEvent(MotionEvent event) {
